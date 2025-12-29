@@ -29,10 +29,7 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-    /* Use standard border color utility instead of forced width */
-  }
+
 
   body {
     @apply bg-background text-foreground;
