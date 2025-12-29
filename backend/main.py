@@ -41,8 +41,15 @@ def predict_text(request: TextRequest):
 
 @app.post("/decode/qr")
 async def decode_qr(file: UploadFile = File(...)):
-    import cv2
-    import numpy as np
+    try:
+        import cv2
+        import numpy as np
+    except ImportError:
+         return {
+             "is_phishing": False,
+             "confidence": 0.0,
+             "analysis": "QR Code feature disabled on this deployment due to size limits."
+         }
 
     # Read image
     contents = await file.read()

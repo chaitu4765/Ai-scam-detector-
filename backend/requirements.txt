@@ -1,8 +1,7 @@
 fastapi
 uvicorn
 scikit-learn
-pandas
 numpy
-qrcode[pil]
-opencv-python-headless
 python-multipart
+# pandas removed to save size (only needed for training)
+# opencv removed to save size (QR feature disabled)
