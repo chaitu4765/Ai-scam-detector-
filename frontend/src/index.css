@@ -30,7 +30,8 @@
 
 @layer base {
   * {
-    @apply border-[length:--border];
+    @apply border-border;
+    /* Use standard border color utility instead of forced width */
   }
 
   body {
