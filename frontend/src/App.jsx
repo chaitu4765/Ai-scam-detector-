@@ -51,11 +51,15 @@ function App() {
     } catch (error) {
       console.error("Scan failed", error);
       setLoading(false);
-      // Fallback mock result if backend isn't running yet for demo
+
+      const errorMessage = error.response
+        ? `Error ${error.response.status}: ${error.response.data?.detail || error.response.statusText}`
+        : error.message || "Network error. Please check your connection.";
+
       setResult({
         is_phishing: true,
         confidence: 0.88,
-        analysis: "Error connecting to backend, but here is a demo alert."
+        analysis: `Error connecting to backend: ${errorMessage}`
       })
     }
   }
