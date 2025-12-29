@@ -92,7 +92,7 @@ function App() {
               <span className="text-primary drop-shadow-[0_0_20px_rgba(255,100,100,0.5)]">PHISHING</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground/80 font-medium max-w-2xl mx-auto">
-              Advanced AI-powered security for your emails and URLs.
+              AI-powered security for your emails and URLs.
             </p>
           </motion.div>
 
