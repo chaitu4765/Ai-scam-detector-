@@ -5,7 +5,7 @@ import axios from 'axios'
 
 // Configure Axios
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.PROD ? '/api' : 'http://localhost:8000',
 });
 
 function App() {
