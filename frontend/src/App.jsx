@@ -61,47 +61,53 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary selection:text-white relative overflow-hidden">
+
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px]" />
+      </div>
+
       {/* Navbar */}
-      <nav className="p-6 flex justify-between items-center border-b border-white/10 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-2 text-primary font-bold text-xl tracking-tighter">
-          <Shield className="w-8 h-8" />
-          <span>PhishGuard AI</span>
+      <nav className="p-6 flex justify-between items-center z-50 relative">
+        <div className="flex items-center gap-2 text-primary font-bold text-xl tracking-tighter cursor-default">
+          <Shield className="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,100,100,0.5)]" />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-white">PhishGuard AI</span>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center p-6 relative overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px] pointer-events-none" />
+      <main className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
 
-        <div className="max-w-4xl w-full flex flex-col items-center z-10">
-          <motion.h1
+        <div className="max-w-4xl w-full flex flex-col items-center">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-extrabold text-center tracking-tight mb-6 bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent"
+            className="text-center mb-10"
           >
-            AI-Powered Threat Detection
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl text-muted-foreground text-center mb-12 max-w-2xl"
-          >
-            Secure your digital life. Detect phishing emails, malicious URLs, and fraudulent QR codes instantly with our advanced machine learning models.
-          </motion.p>
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-4">
+              <span className="text-white drop-shadow-lg">DETECT</span><br />
+              <span className="text-primary drop-shadow-[0_0_20px_rgba(255,100,100,0.5)]">PHISHING</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground/80 font-medium max-w-2xl mx-auto">
+              Advanced AI-powered security for your emails and URLs.
+            </p>
+          </motion.div>
 
           {/* Application Logic Wrapper */}
-          <div className="w-full max-w-2xl bg-white/5 border border-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-2xl">
+          <div className="w-full max-w-2xl bg-black/40 border border-white/5 backdrop-blur-2xl rounded-3xl p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
             {/* Tabs */}
-            <div className="flex gap-2 mb-6 p-1 bg-black/20 rounded-xl w-fit mx-auto">
+            <div className="flex gap-2 mb-6 p-1 bg-white/5 rounded-xl w-fit mx-auto">
               {['text', 'url', 'qr'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? 'bg-primary text-white shadow-lg' : 'text-muted-foreground hover:text-white'}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === tab
+                      ? 'bg-primary text-white shadow-[0_0_20px_javax.swing.plaf.ColorUIResource[r=255,g=100,b=100]] transform scale-105'
+                      : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                    }`}
                 >
                   {tab === 'text' && <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> Message</div>}
                   {tab === 'url' && <div className="flex items-center gap-2"><Globe className="w-4 h-4" /> URL</div>}
@@ -111,41 +117,43 @@ function App() {
             </div>
 
             {/* Input Area */}
-            <div className="relative mb-6">
+            <div className="relative mb-8">
               {activeTab === 'qr' ? (
-                <div className="border-2 border-dashed border-white/20 rounded-xl h-48 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/50 hover:bg-primary/5 transition-colors cursor-pointer group">
-                  <Upload className="w-10 h-10 mb-4 text-white/50 group-hover:text-primary transition-colors" />
-                  <p>Drag & Drop QR Code Image</p>
-                  <p className="text-xs mt-2">or click to browse</p>
+                <div className="border-2 border-dashed border-white/10 rounded-2xl h-48 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/50 hover:bg-primary/5 transition-colors cursor-pointer group">
+                  <Upload className="w-12 h-12 mb-4 text-white/30 group-hover:text-primary transition-colors" />
+                  <p className="font-medium text-lg">Drag & Drop QR Code</p>
+                  <p className="text-sm opacity-50 mt-1">or click to browse</p>
                   <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
                 </div>
               ) : (
                 <textarea
-                  placeholder={activeTab === 'url' ? "Paste any suspicious link here..." : "Paste email content or SMS message here..."}
+                  placeholder={activeTab === 'url' ? "Paste suspicious URL here (e.g., http://login-secure.com)..." : "Paste email content here to scan for threats..."}
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  className="w-full h-32 bg-black/40 border border-white/10 rounded-xl p-4 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                  className="w-full h-40 bg-black/50 border border-white/10 rounded-2xl p-6 text-lg text-white placeholder-white/20 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 resize-none transition-all shadow-inner"
                 ></textarea>
               )}
             </div>
 
-            {/* Action Button */}
+            {/* Action Button - Styled like "Get Started" */}
             <button
               onClick={handleScan}
               disabled={loading || (!inputText && activeTab !== 'qr')}
-              className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-all active:scale-[0.98]"
+              className="w-full bg-[#FF4D4D] hover:bg-[#FF3333] disabled:opacity-50 disabled:cursor-not-allowed text-white text-lg font-bold py-5 rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(255,77,77,0.4)] hover:shadow-[0_15px_40px_rgba(255,77,77,0.6)] transition-all transform hover:-translate-y-1 active:translate-y-0"
             >
               {loading ? (
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                 >
-                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full" />
+                  <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full" />
                 </motion.div>
               ) : (
                 <>
-                  <span>Analyze content</span>
-                  <Shield className="w-5 h-5" />
+                  <span>SCAN NOW</span>
+                  <div className="bg-white/20 p-1 rounded-full">
+                    <Shield className="w-5 h-5 fill-current" />
+                  </div>
                 </>
               )}
             </button>
@@ -158,32 +166,28 @@ function App() {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className={`mt-8 p-6 rounded-2xl border w-full max-w-2xl backdrop-blur-xl shadow-2xl ${result.is_phishing
-                  ? 'bg-red-500/10 border-red-500/50 shadow-red-500/10'
-                  : 'bg-green-500/10 border-green-500/50 shadow-green-500/10'
+                className={`mt-8 p-8 rounded-3xl border w-full max-w-2xl backdrop-blur-3xl shadow-2xl relative overflow-hidden ${result.is_phishing
+                  ? 'bg-red-500/10 border-red-500/30'
+                  : 'bg-green-500/10 border-green-500/30'
                   }`}
               >
-                <div className="flex gap-4 items-start">
-                  <div className={`p-3 rounded-full ${result.is_phishing ? 'bg-red-500/20 text-red-400' : 'bg-green-500/20 text-green-400'}`}>
-                    {result.is_phishing ? <AlertTriangle className="w-8 h-8" /> : <CheckCircle className="w-8 h-8" />}
+                <div className="absolute inset-0 z-0 opacity-20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+
+                <div className="flex gap-6 items-center relative z-10">
+                  <div className={`p-5 rounded-2xl shadow-lg border border-white/10 ${result.is_phishing ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
+                    {result.is_phishing ? <AlertTriangle className="w-10 h-10" /> : <CheckCircle className="w-10 h-10" />}
                   </div>
                   <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className={`text-2xl font-bold ${result.is_phishing ? 'text-red-400' : 'text-green-400'}`}>
-                        {result.is_phishing ? 'Threat Detected' : 'Safe Content'}
-                      </h3>
-                      <span className="text-sm font-mono opacity-70">
-                        Confidence: {(result.confidence * 100).toFixed(1)}%
-                      </span>
-                    </div>
-                    <p className="text-muted-foreground mb-4">
+                    <h3 className={`text-3xl font-black mb-1 ${result.is_phishing ? 'text-red-400' : 'text-green-400'}`}>
+                      {result.is_phishing ? 'DANGEROUS' : 'SAFE'}
+                    </h3>
+                    <p className="text-lg text-white/80 font-medium">
                       {result.analysis}
                     </p>
-                    {result.is_phishing && (
-                      <div className="text-xs bg-red-500/10 border border-red-500/20 p-3 rounded-lg text-red-300">
-                        Recommendation: Do not click any links. Delete this message immediately.
-                      </div>
-                    )}
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm opacity-50 uppercase tracking-widest font-bold">Confidence</div>
+                    <div className="text-4xl font-black">{(result.confidence * 100).toFixed(0)}%</div>
                   </div>
                 </div>
               </motion.div>
@@ -192,7 +196,7 @@ function App() {
         </div>
       </main>
 
-      <footer className="p-6 text-center text-xs text-muted-foreground">
+      <footer className="p-8 text-center text-sm text-gray-500 z-10">
         © 2025 PhishGuard AI. All rights reserved.
       </footer>
     </div>
