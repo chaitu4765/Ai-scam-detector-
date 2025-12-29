@@ -68,11 +68,6 @@ function App() {
           <Shield className="w-8 h-8" />
           <span>PhishGuard AI</span>
         </div>
-        <div className="hidden md:flex gap-6 text-sm font-medium text-muted-foreground">
-          <a href="#" className="hover:text-primary transition-colors">Dashboard</a>
-          <a href="#" className="hover:text-primary transition-colors">Live Map</a>
-          <a href="#" className="hover:text-primary transition-colors">API</a>
-        </div>
       </nav>
 
       {/* Hero Section */}
