@@ -73,9 +73,6 @@ function App() {
           <a href="#" className="hover:text-primary transition-colors">Live Map</a>
           <a href="#" className="hover:text-primary transition-colors">API</a>
         </div>
-        <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold transition-transform hover:scale-105">
-          Log In
-        </button>
       </nav>
 
       {/* Hero Section */}
