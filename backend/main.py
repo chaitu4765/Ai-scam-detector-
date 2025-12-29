@@ -3,7 +3,11 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-app = FastAPI(title="Phishing Detection API", description="API for detecting phishing in text, URLs, and QR codes.")
+app = FastAPI(
+    title="Phishing Detection API",
+    description="API for detecting phishing in text, URLs, and QR codes.",
+    root_path="/api"
+)
 
 # CORS setup to allow frontend to communicate
 app.add_middleware(
