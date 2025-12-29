@@ -1,0 +1,23 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Datasets (Too large for GitHub standard)
+phishing  dataset email/
+phishing detection dataset/
+archive/
+
+# IDEs
+.vscode/
+.idea/
+
+# Node
+node_modules/
+dist/
+
+# Artifacts/Temp
+.gemini/
