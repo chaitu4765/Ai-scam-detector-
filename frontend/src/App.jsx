@@ -105,8 +105,8 @@ function App() {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === tab
-                      ? 'bg-primary text-white shadow-[0_0_20px_javax.swing.plaf.ColorUIResource[r=255,g=100,b=100]] transform scale-105'
-                      : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                    ? 'bg-primary text-white shadow-[0_0_20px_javax.swing.plaf.ColorUIResource[r=255,g=100,b=100]] transform scale-105'
+                    : 'text-muted-foreground hover:text-white hover:bg-white/5'
                     }`}
                 >
                   {tab === 'text' && <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> Message</div>}
@@ -196,9 +196,6 @@ function App() {
         </div>
       </main>
 
-      <footer className="p-8 text-center text-sm text-gray-500 z-10">
-        © 2025 PhishGuard AI. All rights reserved.
-      </footer>
     </div>
   )
 }
