@@ -78,7 +78,7 @@ function App() {
       <nav className="p-6 flex justify-between items-center z-50 relative">
         <div className="flex items-center gap-2 text-primary font-bold text-xl tracking-tighter cursor-default">
           <Shield className="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,100,100,0.5)]" />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-white">PhishGuard AI</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-white">PhishGuard AI v1.1</span>
         </div>
       </nav>
 

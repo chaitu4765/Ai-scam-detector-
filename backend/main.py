@@ -18,6 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+print("Phishing Detection API initialized with root_path='/api'")
+
 class TextRequest(BaseModel):
     content: str
     type: str = "email" # or "message" or "url"
