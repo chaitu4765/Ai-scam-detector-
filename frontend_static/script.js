@@ -69,46 +69,47 @@ document.addEventListener('DOMContentLoaded', () => {
             if (activeTab === 'qr') {
                 const formData = new FormData();
                 formData.append('file', file);
-                response = await fetch(`${API_BASE}/decode/qr`, {
+                response = await fetch(`/api/decode/qr`, {
                     method: 'POST',
                     body: formData
                 });
             } else {
-                // ✅ FINAL GUARANTEED FETCH (v9.0)
-                // Use the FULL absolute URL to ensure reachability
-                const fullUrl = window.location.origin + "/api/scan";
-                console.log("Scanning via:", fullUrl);
+                // ✅ FINAL ABSOLUTE URL FETCH (v10.0)
+                const backendUrl = window.location.origin + "/api/scan";
+                console.log("Connecting to:", backendUrl);
 
-                response = await fetch(fullUrl, {
+                response = await fetch(backendUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify({ input: content })
                 });
             }
 
             if (!response.ok) {
-                throw new Error("Backend unreachable");
+                throw new Error("Server error " + response.status);
             }
 
             const data = await response.json();
 
-            // Artificial delay for "premium" feel
             setTimeout(() => {
                 showResult(data);
                 setLoading(false);
             }, 800);
 
         } catch (error) {
-            console.error("Backend unreachable", error);
+            console.error("Fetch failure", error);
             setLoading(false);
 
-            // Fallback result matching the mandatory schema
+            // Fallback result with clean error message (no double prefix)
             showResult({
                 safe: true,
                 phishing: false,
                 confidence: 65,
                 is_error: true,
-                error_msg: "Connection error: Backend unreachable"
+                error_msg: "Backend unreachable"
             });
         }
     });
@@ -130,37 +131,32 @@ document.addEventListener('DOMContentLoaded', () => {
     function showResult(data) {
         resultContainer.classList.remove('hidden');
 
-        const isPhishing = data.phishing;
         const isSafe = data.safe;
+        const confidenceValue = data.confidence;
 
-        // Reset themes
         resultCard.classList.remove('danger-theme', 'safe-theme');
         iconWarning.classList.add('hidden');
         iconSafe.classList.add('hidden');
 
-        if (isPhishing) {
-            resultCard.classList.add('danger-theme');
-            resultStatus.textContent = 'DANGEROUS';
-            resultMessage.textContent = 'Suspicious content detected.';
-            iconWarning.classList.remove('hidden');
-        } else {
+        if (isSafe) {
             resultCard.classList.add('safe-theme');
             resultStatus.textContent = 'SAFE';
             resultMessage.textContent = activeTab === 'url' ? 'URL appears safe.' : 'Message appears safe.';
             iconSafe.classList.remove('hidden');
+        } else {
+            resultCard.classList.add('danger-theme');
+            resultStatus.textContent = 'DANGEROUS';
+            resultMessage.textContent = 'Suspicious content detected.';
+            iconWarning.classList.remove('hidden');
         }
 
         if (data.is_error) {
+            // Clean display: "Connection error: Backend unreachable"
             resultMessage.textContent = `Connection error: ${data.error_msg}`;
         }
 
-        // Confidence is now 0-100 directly from API
-        resultConfidence.textContent = `${data.confidence}%`;
-
-        // Re-init icons
+        resultConfidence.textContent = `${confidenceValue}%`;
         lucide.createIcons();
-
-        // Scroll to result
         resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 });
