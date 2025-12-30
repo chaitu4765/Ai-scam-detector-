@@ -18,17 +18,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-print("Phishing Detection API initialized with root_path='/api'")
+import os
+import sys
 
-class TextRequest(BaseModel):
-    content: str
-    type: str = "email" # or "message" or "url"
+# Ensure the current directory is in sys.path for relative imports to work as absolute imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
+startup_error = None
+model = None
+
+try:
+    from model import model as phishing_model
+    model = phishing_model
+except Exception as e:
+    startup_error = str(e)
+    print(f"STARTUP ERROR: {e}")
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "message": "Phishing Detection System Ready"}
-
-from .model import model
+    return {
+        "status": "online" if not startup_error else "error",
+        "version": "v1.7",
+        "startup_error": startup_error,
+        "current_dir": current_dir,
+        "sys_path": sys.path[:5], # Show first few entries for debugging
+        "files_in_dir": os.listdir(current_dir)
+    }
 
 @app.post("/predict/text")
 def predict_text(request: TextRequest):
