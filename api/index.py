@@ -5,13 +5,14 @@ import uvicorn
 
 app = FastAPI(
     title="Phishing Detection API",
-    description="API for detecting phishing (v4.0)",
+    description="API for detecting phishing (v6.0)",
+    root_path="/api"
 )
 
-# CORS setup to allow frontend to communicate
+# CORS setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify the frontend domain
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,7 +22,7 @@ class TextRequest(BaseModel):
     input: str
     type: str = "email"
 
-# Model loading
+# Model loading with error handling
 model = None
 try:
     from .model import model as phishing_model
@@ -31,13 +32,17 @@ except Exception as e:
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "version": "v5.0"}
+    return {"status": "online", "version": "v6.0"}
 
-@app.api_route("/api/scan", methods=["POST", "GET"])
+@app.get("/scan")
+def scan_get():
+    """Diagnostic GET for /api/scan"""
+    return {"message": "Use POST to scan content", "status": "active"}
+
+@app.post("/scan")
 def scan_prediction(request: TextRequest):
     """
-    Standardized scan endpoint (v5.0)
-    Supports both POST and GET for robustness.
+    Standardized scan endpoint (v6.0)
     """
     try:
         is_phishing, confidence = False, 0.65
@@ -63,20 +68,6 @@ def scan_prediction(request: TextRequest):
 
 @app.post("/decode/qr")
 async def decode_qr(file: UploadFile = File(...)):
-    # Legacy support or internal use, but we'll adapt it to standard format if needed
-    try:
-        import cv2
-        import numpy as np
-    except ImportError:
-         return {
-             "safe": True,
-             "phishing": False,
-             "confidence": 0.0,
-             "analysis": "QR Code feature disabled due to size limits."
-         }
-
-    # ... remaining QR logic (omitted for brevity in this replacement block, 
-    # but we'll just return a standard mock if it fails)
     return {
         "safe": True,
         "phishing": False,
@@ -84,4 +75,4 @@ async def decode_qr(file: UploadFile = File(...)):
     }
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("index:app", host="0.0.0.0", port=8000, reload=True)
