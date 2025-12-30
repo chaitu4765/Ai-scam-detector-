@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 class TextRequest(BaseModel):
-    content: str
+    input: str
     type: str = "email"
 
 # Model loading
@@ -31,18 +31,20 @@ except Exception as e:
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "version": "v4.0"}
+    return {"status": "online", "version": "v5.0"}
 
-@app.post("/api/scan")
+@app.api_route("/api/scan", methods=["POST", "GET"])
 def scan_prediction(request: TextRequest):
     """
-    Standardized scan endpoint (v4.0)
+    Standardized scan endpoint (v5.0)
+    Supports both POST and GET for robustness.
     """
     try:
         is_phishing, confidence = False, 0.65
         
         if model:
-            is_phishing, confidence = model.predict(request.content)
+            # Note: request.input is used here as per user requirement
+            is_phishing, confidence = model.predict(request.input)
         
         # Standardized Response Format: 0-100 percentage
         return {
