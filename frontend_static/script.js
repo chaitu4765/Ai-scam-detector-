@@ -74,8 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: formData
                 });
             } else {
-                // ✅ CORRECT MANDATORY FETCH (v8.0)
-                response = await fetch(`/api/scan`, {
+                // ✅ FINAL GUARANTEED FETCH (v9.0)
+                // Use the FULL absolute URL to ensure reachability
+                const fullUrl = window.location.origin + "/api/scan";
+                console.log("Scanning via:", fullUrl);
+
+                response = await fetch(fullUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ input: content })
