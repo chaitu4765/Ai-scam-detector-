@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             let response;
             if (activeTab === 'qr') {
-                // QR logic remains separate but should follow standard if possible
                 const formData = new FormData();
                 formData.append('file', file);
                 response = await fetch(`${API_BASE}/decode/qr`, {
@@ -75,20 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: formData
                 });
             } else {
-                // Guaranteed fetch for v7.0 - Explicit POST with 'input' body
+                // ✅ CORRECT MANDATORY FETCH (v8.0)
                 response = await fetch(`/api/scan`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ input: content, type: activeTab })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input: content })
                 });
             }
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(`Error ${response.status}: ${errorData.detail || response.statusText}`);
+                throw new Error("Backend unreachable");
             }
 
             const data = await response.json();
@@ -100,16 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800);
 
         } catch (error) {
-            console.error("Scan failed", error);
+            console.error("Backend unreachable", error);
             setLoading(false);
 
-            // Fallback / Error result strictly following standard
+            // Fallback result matching the mandatory schema
             showResult({
                 safe: true,
                 phishing: false,
                 confidence: 65,
                 is_error: true,
-                error_msg: error.message
+                error_msg: "Connection error: Backend unreachable"
             });
         }
     });
