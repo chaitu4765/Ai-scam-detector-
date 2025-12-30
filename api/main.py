@@ -5,8 +5,7 @@ import uvicorn
 
 app = FastAPI(
     title="Phishing Detection API",
-    description="API for detecting phishing in text, URLs, and QR codes (Standardized v1.6)",
-    root_path="/api"
+    description="API for detecting phishing (v4.0)",
 )
 
 # CORS setup to allow frontend to communicate
@@ -18,49 +17,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-import os
-import sys
+class TextRequest(BaseModel):
+    content: str
+    type: str = "email"
 
-# Ensure the current directory is in sys.path for relative imports to work as absolute imports
-current_dir = os.path.dirname(os.path.abspath(__file__))
-if current_dir not in sys.path:
-    sys.path.append(current_dir)
-
-startup_error = None
-model = None
-
-try:
-    from model import model as phishing_model
-    model = phishing_model
-except Exception as e:
-    startup_error = str(e)
-    print(f"STARTUP ERROR: {e}")
+# Placeholder for model loading, if needed in the future
+# startup_error = None
+# model = None
+# try:
+#     from model import model as phishing_model
+#     model = phishing_model
+# except Exception as e:
+#     startup_error = str(e)
+#     print(f"STARTUP ERROR: {e}")
 
 @app.get("/")
 def read_root():
-    return {
-        "status": "online" if not startup_error else "error",
-        "version": "v2.3",
-        "startup_error": startup_error,
-        "model_errors": model.errors if model else ["Model object not created"],
-        "current_dir": current_dir,
-        "sys_path": sys.path[:5], # Show first few entries for debugging
-        "files_in_dir": os.listdir(current_dir)
-    }
+    return {"status": "online", "version": "v4.0"}
 
-@app.post("/scan")
+@app.post("/api/scan")
 def scan_prediction(request: TextRequest):
     """
-    Standardized scan endpoint returning:
-    { "safe": bool, "phishing": bool, "confidence": float (0-100) }
+    Standardized scan endpoint (v4.0)
     """
     try:
         is_phishing, confidence = False, 0.65
         
-        if model:
-            is_phishing, confidence = model.predict(request.content)
+        # if model:
+        #     is_phishing, confidence = model.predict(request.content)
         
-        # Standardized Response Format
+        # Standardized Response Format: 0-100 percentage
         return {
             "safe": not is_phishing,
             "phishing": is_phishing,

@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: formData
                 });
             } else {
-                // Use standard /scan endpoint
-                response = await fetch(`${API_BASE}/scan`, {
+                // Use standard /api/scan endpoint
+                response = await fetch(`/api/scan`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content, type: activeTab })
