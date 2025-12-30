@@ -5,7 +5,8 @@ import uvicorn
 
 app = FastAPI(
     title="Phishing Detection API",
-    description="API for detecting phishing in text, URLs, and QR codes (Standardized v1.2)",
+    description="API for detecting phishing in text, URLs, and QR codes (Standardized v1.6)",
+    root_path="/api"
 )
 
 # CORS setup to allow frontend to communicate
