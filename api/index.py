@@ -40,7 +40,7 @@ except Exception as e:
 def read_root():
     return {
         "status": "online" if not startup_error else "error",
-        "version": "v2.2",
+        "version": "v2.3",
         "startup_error": startup_error,
         "model_errors": model.errors if model else ["Model object not created"],
         "current_dir": current_dir,

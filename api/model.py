@@ -71,7 +71,9 @@ class PhishingModel:
                 # 1 = Phishing (Bad), 0 = Safe (Good)
                 prediction = self.url_model.predict([url])[0]
                 proba = self.url_model.predict_proba([url])[0]
-                confidence = proba[1]
+                # If prediction is 1 (Phishing), confidence is proba[1]
+                # If prediction is 0 (Safe), confidence is proba[0]
+                confidence = proba[prediction]
                 return prediction == 1, confidence
             except Exception as e:
                 print(f"URL prediction error: {e}")
@@ -92,7 +94,8 @@ class PhishingModel:
                 prediction = self.email_model.predict([text])[0]
                 if hasattr(self.email_model, "predict_proba"):
                      proba = self.email_model.predict_proba([text])[0]
-                     confidence = proba[1] 
+                     # Return confidence in the predicted class
+                     confidence = proba[prediction] 
                      return prediction == 1, confidence
                 return prediction == 1, 1.0
             except Exception as e:
