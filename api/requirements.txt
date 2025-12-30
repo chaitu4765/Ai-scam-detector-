@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+scikit-learn
+numpy
+python-multipart
+# pandas removed to save size (only needed for training)
+# opencv removed to save size (QR feature disabled)
