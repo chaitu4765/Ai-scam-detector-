@@ -40,8 +40,9 @@ except Exception as e:
 def read_root():
     return {
         "status": "online" if not startup_error else "error",
-        "version": "v1.7",
+        "version": "v2.2",
         "startup_error": startup_error,
+        "model_errors": model.errors if model else ["Model object not created"],
         "current_dir": current_dir,
         "sys_path": sys.path[:5], # Show first few entries for debugging
         "files_in_dir": os.listdir(current_dir)
@@ -50,16 +51,28 @@ def read_root():
 @app.post("/predict/text")
 def predict_text(request: TextRequest):
     # Use the trained model
-    is_phishing, confidence = model.predict(request.content)
+    is_phishing, confidence = False, 0.0
+    errors = []
     
+    if model:
+        is_phishing, confidence = model.predict(request.content)
+        errors = model.errors
+    else:
+        errors = ["Model not initialized"]
+
     analysis = "Suspicious content detected." if is_phishing else "Content appears safe."
     if request.type == "url":
          analysis = "Malicious URL detected." if is_phishing else "URL appears safe."
+    
+    # If confidence is 0, append a warning about model loading
+    if confidence == 0:
+        analysis += f" (Warning: AI model might not be loaded. Errors: {', '.join(errors)})"
 
     return {
         "is_phishing": bool(is_phishing),
         "confidence": float(confidence),
-        "analysis": analysis
+        "analysis": analysis,
+        "debug_errors": errors
     }
 
 @app.post("/decode/qr")

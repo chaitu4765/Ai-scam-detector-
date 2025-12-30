@@ -12,6 +12,7 @@ class PhishingModel:
     def __init__(self, email_model_path="phishing_model.pkl", url_model_path="url_model.pkl"):
         self.email_model = None
         self.url_model = None
+        self.errors = []
         
         # Get the absolute directory where this script is located
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -39,9 +40,13 @@ class PhishingModel:
                     self.email_model = pickle.load(f)
                 print("Email phishing model loaded successfully.")
             else:
-                print(f"ERROR: Email model file {email_model_path} NOT FOUND in any expected paths.")
+                err = f"Email model {email_model_path} not found."
+                print(err)
+                self.errors.append(err)
         except Exception as e:
-             print(f"CRITICAL ERROR: Could not load email model: {e}")
+             err = f"Email model load error: {e}"
+             print(err)
+             self.errors.append(err)
 
         # Load URL Model
         try:
@@ -52,9 +57,13 @@ class PhishingModel:
                     self.url_model = pickle.load(f)
                 print("URL phishing model loaded successfully.")
             else:
-                print(f"ERROR: URL model file {url_model_path} NOT FOUND in any expected paths.")
+                err = f"URL model {url_model_path} not found."
+                print(err)
+                self.errors.append(err)
         except Exception as e:
-             print(f"CRITICAL ERROR: Could not load URL model: {e}")
+             err = f"URL model load error: {e}"
+             print(err)
+             self.errors.append(err)
 
     def predict_url(self, url):
         if self.url_model:
