@@ -21,15 +21,13 @@ class TextRequest(BaseModel):
     content: str
     type: str = "email"
 
-# Placeholder for model loading, if needed in the future
-# startup_error = None
-# model = None
-# try:
-#     from model import model as phishing_model
-#     model = phishing_model
-# except Exception as e:
-#     startup_error = str(e)
-#     print(f"STARTUP ERROR: {e}")
+# Model loading
+model = None
+try:
+    from .model import model as phishing_model
+    model = phishing_model
+except Exception as e:
+    print(f"STARTUP ERROR: {e}")
 
 @app.get("/")
 def read_root():
@@ -43,8 +41,8 @@ def scan_prediction(request: TextRequest):
     try:
         is_phishing, confidence = False, 0.65
         
-        # if model:
-        #     is_phishing, confidence = model.predict(request.content)
+        if model:
+            is_phishing, confidence = model.predict(request.content)
         
         # Standardized Response Format: 0-100 percentage
         return {
