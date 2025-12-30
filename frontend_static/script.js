@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             let response;
             if (activeTab === 'qr') {
+                // QR logic remains separate but should follow standard if possible
                 const formData = new FormData();
                 formData.append('file', file);
                 response = await fetch(`${API_BASE}/decode/qr`, {
@@ -74,7 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: formData
                 });
             } else {
-                response = await fetch(`${API_BASE}/predict/text`, {
+                // Use standard /scan endpoint
+                response = await fetch(`${API_BASE}/scan`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content, type: activeTab })
@@ -98,12 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Scan failed", error);
             setLoading(false);
 
-            // Fallback / Error result
+            // Fallback / Error result strictly following standard
             showResult({
-                is_phishing: true,
-                confidence: 0,
-                analysis: `Connection failed: ${error.message}`
-            }, true);
+                safe: true,
+                phishing: false,
+                confidence: 65,
+                is_error: true,
+                error_msg: error.message
+            });
         }
     });
 
@@ -121,10 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showResult(data, isError = false) {
+    function showResult(data) {
         resultContainer.classList.remove('hidden');
 
-        const isPhishing = data.is_phishing;
+        const isPhishing = data.phishing;
+        const isSafe = data.safe;
 
         // Reset themes
         resultCard.classList.remove('danger-theme', 'safe-theme');
@@ -133,18 +138,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isPhishing) {
             resultCard.classList.add('danger-theme');
-            resultStatus.textContent = isError ? 'ERROR' : 'DANGEROUS';
+            resultStatus.textContent = 'DANGEROUS';
+            resultMessage.textContent = 'Suspicious content detected.';
             iconWarning.classList.remove('hidden');
         } else {
             resultCard.classList.add('safe-theme');
             resultStatus.textContent = 'SAFE';
+            resultMessage.textContent = activeTab === 'url' ? 'URL appears safe.' : 'Message appears safe.';
             iconSafe.classList.remove('hidden');
         }
 
-        resultMessage.textContent = data.analysis;
-        resultConfidence.textContent = `${(data.confidence * 100).toFixed(0)}%`;
+        if (data.is_error) {
+            resultMessage.textContent = `Connection error: ${data.error_msg}`;
+        }
 
-        // Re-init icons for dynamic elements
+        // Confidence is now 0-100 directly from API
+        resultConfidence.textContent = `${data.confidence}%`;
+
+        // Re-init icons
         lucide.createIcons();
 
         // Scroll to result
