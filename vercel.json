@@ -1,6 +1,5 @@
 {
-    "buildCommand": "cd frontend && npm install && npm run build",
-    "outputDirectory": "frontend/dist",
+    "outputDirectory": "frontend_static",
     "rewrites": [
         {
             "source": "/api/(.*)",

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard AI - AI-Powered Security</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Outfit:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Dynamic Background -->
+    <div class="background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="page-wrapper">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                <i data-lucide="shield" class="logo-icon"></i>
+                <span class="logo-text">PhishGuard AI <span class="version">v2.0</span></span>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <main class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="text-white">DETECT</span><br>
+                    <span class="text-primary glow">PHISHING</span>
+                </h1>
+                <p class="hero-subtitle"> AI-powered security for your emails and URLs.</p>
+            </div>
+
+            <!-- Application logic -->
+            <div class="card main-card">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="text">
+                        <i data-lucide="mail"></i> Message
+                    </button>
+                    <button class="tab-btn" data-tab="url">
+                        <i data-lucide="globe"></i> URL
+                    </button>
+                    <button class="tab-btn" data-tab="qr">
+                        <i data-lucide="smartphone"></i> QR Code
+                    </button>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-container">
+                    <div id="text-input-area">
+                        <textarea id="input-text" placeholder="Paste email content here to scan for threats..."></textarea>
+                    </div>
+                    <div id="qr-input-area" class="hidden">
+                        <label for="qr-file" class="qr-dropzone">
+                            <i data-lucide="upload" class="upload-icon"></i>
+                            <p class="font-medium">Drag & Drop QR Code</p>
+                            <p class="text-small opacity-50">or click to browse</p>
+                            <input type="file" id="qr-file" accept="image/*">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button id="scan-btn" class="scan-button">
+                    <span class="btn-text">SCAN NOW</span>
+                    <i data-lucide="shield" class="btn-icon"></i>
+                    <div id="loading-spinner" class="spinner hidden"></div>
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div id="result-container" class="hidden">
+                <div id="result-card" class="card result-card">
+                    <div class="result-header">
+                        <div id="result-icon-container" class="result-icon">
+                            <i data-lucide="alert-triangle" id="icon-warning"></i>
+                            <i data-lucide="check-circle" id="icon-safe" class="hidden"></i>
+                        </div>
+                        <div class="result-info">
+                            <h3 id="result-status" class="status-text">DANGEROUS</h3>
+                            <p id="result-message" class="message-text">Suspicious content detected.</p>
+                        </div>
+                        <div class="result-stats">
+                            <span class="label">Confidence</span>
+                            <span id="result-confidence" class="value">88%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
