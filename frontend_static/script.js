@@ -75,10 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: formData
                 });
             } else {
-                // Use standard /api/scan endpoint with explicit POST
+                // Guaranteed fetch for v7.0 - Explicit POST with 'input' body
                 response = await fetch(`/api/scan`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify({ input: content, type: activeTab })
                 });
             }
