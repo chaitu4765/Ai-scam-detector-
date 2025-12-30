@@ -13,29 +13,35 @@ class PhishingModel:
         self.email_model = None
         self.url_model = None
         
+        # Get the absolute directory where this script is located
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        print(f"Model loader initialized. Current dir: {current_dir}")
+        
         # Load Email Model
         try:
-            if not os.path.exists(email_model_path):
-                 current_dir = os.path.dirname(os.path.abspath(__file__))
-                 email_model_path = os.path.join(current_dir, "phishing_model.pkl")
-
-            with open(email_model_path, 'rb') as f:
-                self.email_model = pickle.load(f)
-            print("Email phishing model loaded.")
+            full_email_path = os.path.join(current_dir, email_model_path)
+            print(f"Loading email model from: {full_email_path}")
+            if os.path.exists(full_email_path):
+                with open(full_email_path, 'rb') as f:
+                    self.email_model = pickle.load(f)
+                print("Email phishing model loaded successfully.")
+            else:
+                print(f"ERROR: Email model file not found at {full_email_path}")
         except Exception as e:
-             print(f"Warning: Could not load email model: {e}")
+             print(f"CRITICAL ERROR: Could not load email model: {e}")
 
         # Load URL Model
         try:
-            if not os.path.exists(url_model_path):
-                 current_dir = os.path.dirname(os.path.abspath(__file__))
-                 url_model_path = os.path.join(current_dir, "url_model.pkl")
-
-            with open(url_model_path, 'rb') as f:
-                self.url_model = pickle.load(f)
-            print("URL phishing model loaded.")
+            full_url_path = os.path.join(current_dir, url_model_path)
+            print(f"Loading URL model from: {full_url_path}")
+            if os.path.exists(full_url_path):
+                with open(full_url_path, 'rb') as f:
+                    self.url_model = pickle.load(f)
+                print("URL phishing model loaded successfully.")
+            else:
+                print(f"ERROR: URL model file not found at {full_url_path}")
         except Exception as e:
-             print(f"Warning: Could not load URL model: {e}")
+             print(f"CRITICAL ERROR: Could not load URL model: {e}")
 
     def predict_url(self, url):
         if self.url_model:
