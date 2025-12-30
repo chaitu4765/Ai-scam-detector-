@@ -27,7 +27,7 @@ class TextRequest(BaseModel):
 def read_root():
     return {"status": "online", "message": "Phishing Detection System Ready"}
 
-from model import model
+from .model import model
 
 @app.post("/predict/text")
 def predict_text(request: TextRequest):
