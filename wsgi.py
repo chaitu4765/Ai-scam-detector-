@@ -1,15 +1,18 @@
 import sys
 import os
 
-# Create a clear path to the backend
-backend_dir = os.path.join(os.path.dirname(__file__), 'app', 'backend')
-sys.path.append(backend_dir)
+# Add the backend directory to the search path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+backend_path = os.path.join(current_dir, 'app', 'backend')
+if backend_path not in sys.path:
+    sys.path.append(backend_path)
 
-# Import the 'app' instance from app.backend.app
+# Import the 'app' object from app.py inside backend
 try:
     from app import app
-except ImportError:
-    # Fallback for different environment structures
+except ImportError as e:
+    print(f"Error importing app: {e}")
+    # Fallback to direct import if needed
     import app as app_module
     app = app_module.app
 
