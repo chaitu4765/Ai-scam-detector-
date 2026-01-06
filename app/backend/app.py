@@ -1,14 +1,18 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
-import pandas as pd
+# import pandas as pd # Removed to save space/dependency size
 import numpy as np
 import re
 from scipy.sparse import hstack
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app)
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 # Load models and vectorizers
 MODEL_DIR = os.path.join(os.path.dirname(__file__), '../../models')
