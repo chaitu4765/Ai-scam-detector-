@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield AI | Advanced Protection</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">Phish<span>Shield</span> AI</div>
+        <div class="nav-links">
+            <a href="#" class="active">Detection</a>
+            <a href="#">Resources</a>
+            <a href="#">About</a>
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Stay safe from <span>Digital Fraud</span></h1>
+            <p>Paste a URL or Email content below to analyze it for phishing attempts using our advanced machine learning models.</p>
+        </section>
+
+        <section class="detection-container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="url"><i class="fas fa-link"></i> URL Scan</button>
+                <button class="tab-btn" data-tab="email"><i class="fas fa-envelope"></i> Email Analysis</button>
+            </div>
+
+            <div class="tab-content" id="url-tab">
+                <div class="input-group">
+                    <input type="text" id="url-input" placeholder="Enter URL to check (e.g., https://pay-pal.com/verify)">
+                    <button id="analyze-url-btn">Analyze URL</button>
+                </div>
+            </div>
+
+            <div class="tab-content hidden" id="email-tab">
+                <div class="input-group">
+                    <textarea id="email-input" placeholder="Paste the email content or suspicious message here..."></textarea>
+                    <button id="analyze-email-btn">Analyze Content</button>
+                </div>
+            </div>
+
+            <div id="result-container" class="hidden">
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="status-icon"></div>
+                        <h2 id="result-title">Result Title</h2>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="fill" id="confidence-fill"></div>
+                    </div>
+                    <p id="result-text">Analysis details will appear here.</p>
+                    <div class="explanation" id="explanation">
+                        <h3>Why this result?</h3>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

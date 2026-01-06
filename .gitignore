@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.DS_Store
+*.log
+
+# Datasets (Large files)
+*.csv
+datasets/
+archive/
+phishing  dataset email/
+phishing detection dataset/
+
+# Models are kept as they are needed for deployment/running
+!models/*.pkl
